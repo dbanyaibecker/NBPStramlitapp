@@ -296,7 +296,7 @@ with col2:
     st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)     
 #     #Viz 2
     # species detection numbers for any given survey
-    import plotly.express as px
+    
     parks3 = sorted(inputfile['Park'].unique())
     park = st.selectbox('Select a park', parks3, key= 'park_select_3')
     dfparky = pd.DataFrame(inputfile[inputfile['Park'] == park]) 
