@@ -81,6 +81,23 @@ def theme_bcs(fig):
 
 # Inject CSS into the app
 st.markdown(custom_css, unsafe_allow_html=True)
+# make small dataframes for each individual park 
+Seward = inputfile[inputfile['Park'] == 'Seward Park'] # create a new df from og where park is equal to 'Seward Park'
+GoldenGardens = inputfile[inputfile['Park'] == 'Golden Gardens Park']
+Discovery = inputfile[inputfile['Park'] == 'Discovery Park']
+Carkeek = inputfile[inputfile['Park'] == 'Carkeek Park']
+Lincoln = inputfile[inputfile['Park'] == 'Lincoln Park']
+Magnuson = inputfile[inputfile['Park'] == 'Magnuson Park']
+Cheasty = inputfile[inputfile['Park'] == 'Cheasty Greenspace']
+WashingtonParkArboretum = inputfile[inputfile['Park'] == 'Washington Park Arboretum']
+Genesee = inputfile[inputfile['Park'] == 'Genesee Park']
+Walsh = inputfile[inputfile['Park'] == 'Walsh Property']
+Bliner = inputfile[inputfile['Park'] == 'Bliner Property']
+ShadowLakeBog = inputfile[inputfile['Park'] == 'Shadow Lake Bog']
+LakeForest = inputfile[inputfile['Park'] == 'Lake Forest Park']
+SoosCreek = inputfile[inputfile['Park'] == 'Soos Creek']
+ClarkLake = inputfile[inputfile['Park'] == 'Clark Lake Park']
+JenkinsCreek = inputfile[inputfile['Park'] == "Jenkin's Creek Park"]
 
 # Calculate richness from inputfile and map to the correct park
 inputfile = pd.read_csv('NBPdata.csv')
