@@ -82,6 +82,27 @@ def theme_bcs(fig):
 # Inject CSS into the app
 st.markdown(custom_css, unsafe_allow_html=True)
 
+# Calculate richness from inputfile and map to the correct park
+inputfile = pd.read_csv('NBPdata.csv')
+inputfile['richness'] = inputfile['Park'].map({ # here we are creating a dictionary where based on inputfile['Park'] we map the richness calculation to the correct column
+    'Seward Park' : len(Seward['Species'].unique()),
+    'Golden Gardens Park' : len(GoldenGardens['Species'].unique()),
+    'Discovery Park' : len(Discovery['Species'].unique()),
+    'Carkeek Park' : len(Carkeek['Species'].unique()),
+    'Lincoln Park' : len(Lincoln['Species'].unique()),
+    'Magnuson Park' : len(Magnuson['Species'].unique()),
+    'Cheasty Greenspace' : len(Cheasty['Species'].unique()),
+    'Washington Park Arboretum' : len(WashingtonParkArboretum['Species'].unique()),
+    'Genesee Park' : len(Genesee['Species'].unique()),
+    'Walsh Property' : len(Walsh['Species'].unique()),
+    'Bliner Property' : len(Bliner['Species'].unique()),
+    'Shadow Lake Bog' : len(ShadowLakeBog['Species'].unique()),
+    'Lake Forest Park' : len(LakeForest['Species'].unique()),
+    'Soos Creek' : len(SoosCreek['Species'].unique()),
+    'Clark Lake Park' : len(ClarkLake['Species'].unique()),
+    "Jenkin's Creek Park" : len(JenkinsCreek['Species'].unique())
+})
+
 with st.container():
     col1, gap, col2= st.columns([1,0.1,1])
 #Viz 0 
@@ -90,7 +111,7 @@ with col1:
     # st.markdown('<h6 style="color:gray; font-size:20px;">Charts on the left show species richness are shown in this column</h6>', unsafe_allow_html=True) # change font of subtitle
     # st.write('Here is our Dataset:') # write these words in the UI
     # st.dataframe(inputfile.drop(['notes', 'surveyors'], axis = 1)) # show the dataframe in the UI 
-    df = pd.DataFrame(pd.read_csv('richness.csv')) # create a DF 
+    df = inputfile # create a DF 
     st.write('The figure below is a boxplot of total species richness') # write these words in the UI
 #     # sns.barplot(x = 'Park', y = 'richness', data = df, width = 0.8, color = '#7dcea0') # create this barplot 
 #     # plt.xticks(rotation = 90) # rotate the x labels # of degrees
@@ -220,7 +241,6 @@ with col2:
     # st.markdown('<h6 style="color:gray; font-size:20px;">Figures visualizing species counts are shown in this column</h6>', unsafe_allow_html=True) # change font of subtitle    
     
     # # Viz #1 - count of all species at a PARK on a given day 
-    inputfile = pd.DataFrame(pd.read_csv('richness.csv'))
 
     inputfile['Survey Date'] = pd.to_datetime(inputfile['Survey Date']).dt.date
     inputfile['detections'] = inputfile[['Seen','Heard','Fly']].apply(lambda x : x.sum(), axis = 1)
