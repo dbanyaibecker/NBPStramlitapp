@@ -1,4 +1,4 @@
-# NBPStramlitapp
+# NBPStreamlitapp
 This repository is hosting source code for a Streamlit application dashboard exploring Birds Connect Seattles Neighborhood Bird Project data 
 
 Please read the file : 
