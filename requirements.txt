@@ -1,0 +1,7 @@
+numpy
+pandas
+matplotlib.pyplot
+matplotlib.ticker
+streamlit
+plotly.tools
+plotly.express
