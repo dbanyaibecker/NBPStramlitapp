@@ -1,8 +1,6 @@
-numpy
-pandas
-matplotlib
-matplotlib.pyplot
-matplotlib.ticker
+numpy>=2.1.0
+pandas>=2.2.2
+matplotlib>=3.9.2
 streamlit
 plotly.tools
 plotly.express
