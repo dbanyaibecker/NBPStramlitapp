@@ -83,8 +83,8 @@ def theme_bcs(fig):
     )
     
     return fig
-url = "https://docs.google.com/spreadsheets/d/1WIxjOiDpOhU8jOQppXqEglXxrPhiLXbfgKQpi1KDmLM/pub?gid=260577253&single=true&output=csv"
-inputfile = pd.read_csv(url)
+url = "https://docs.google.com/spreadsheets/d/1KKkcDXEj4-OYkjkwKNPRdHKD5GSc3x4S/edit?usp=sharing&ouid=110676057240909060963&rtpof=true&sd=true"
+inputfile = pd.read_excel(url)
 inputfile.columns = inputfile.columns.str.lower()
 # Inject CSS into the app
 st.markdown(custom_css, unsafe_allow_html=True)
@@ -349,7 +349,7 @@ with col2:
     dfparkstation = pd.DataFrame(dfparky[dfparky['station'] == station])
     datez = sorted(dfparkstation['survey_date'].unique())
     # date = selected_date = st.date_input("Select a date") # cool - adds a calendar widget but won't work well here due to sporadic date options
-    date = st.selectbox('Select survey_date: YYYY-MM-DD',datez, key = "date1")
+    date = st.selectbox('Select survey date: YYYY-MM-DD',datez, key = "date1")
     dfparkstationdate = dfparkstation[dfparkstation['survey_date'] == date]
 
     sums = pd.DataFrame(dfparkstationdate.groupby('species')['detections'].sum())
