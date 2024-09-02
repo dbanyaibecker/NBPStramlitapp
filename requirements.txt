@@ -4,3 +4,4 @@ matplotlib>=3.9.2
 seaborn
 streamlit
 plotly
+statsmodels
