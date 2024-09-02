@@ -83,7 +83,7 @@ def theme_bcs(fig):
     )
     
     return fig
-url = "https://docs.google.com/spreadsheets/d/1iPxblBkWb-Iky5WGPTq2LoJYlm6fPgID_HCAhtRpIa8/edit?usp=sharing"
+url = "https://docs.google.com/spreadsheets/d/1iPxblBkWb-Iky5WGPTq2LoJYlm6fPgID_HCAhtRpIa8/pub?output=csv"
 inputfile = pd.read_csv(url)
 inputfile.columns = inputfile.columns.str.lower()
 # Inject CSS into the app
