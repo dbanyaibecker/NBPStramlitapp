@@ -83,8 +83,8 @@ def theme_bcs(fig):
     )
     
     return fig
-url = "https://docs.google.com/spreadsheets/d/1KKkcDXEj4-OYkjkwKNPRdHKD5GSc3x4S/edit?usp=sharing&ouid=110676057240909060963&rtpof=true&sd=true"
-inputfile = pd.read_excel(url)
+url = "https://docs.google.com/spreadsheets/d/1iPxblBkWb-Iky5WGPTq2LoJYlm6fPgID_HCAhtRpIa8/edit?usp=sharing"
+inputfile = pd.read_csv(url)
 inputfile.columns = inputfile.columns.str.lower()
 # Inject CSS into the app
 st.markdown(custom_css, unsafe_allow_html=True)
