@@ -31,8 +31,8 @@ custom_css = """
 from PIL import Image
 
 # Open an image file
-img_path = "/Volumes/SEAGATE BAC/DataScienceLearning/proj_NeighborhoodBirds/BCSLogo.png"
-img_path2 = "/Volumes/SEAGATE BAC/DataScienceLearning/proj_NeighborhoodBirds/BCSbirds.png"
+img_path = "BCSLogo.png"
+img_path2 = "BCSbirds.png"
 image = Image.open(img_path)
 image2 = Image.open(img_path2)
 
