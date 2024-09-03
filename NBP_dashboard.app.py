@@ -41,7 +41,7 @@ image2 = Image.open(img_path2)
 st.image(image, width=500)
 st.markdown('<h6 style="color:black; font-size:20px;">This dashboard allows you to explore and visualize Birds Connect Seattle data.</h6>', unsafe_allow_html=True)   
 st.markdown('<h6 style="color:black; font-size:20px;">Use the selection boxes below to filter and generate charts based on species, location, and dates.</h6>', unsafe_allow_html=True)   
-st.markdown('<h6 style="color:black; font-size:20px;">Whether you are analyzing trends or exploring specific sightings, this tool provides insights into Seattle's local bird populations and their ecology.</h6>', unsafe_allow_html=True) 
+st.markdown('<h6 style="color:black; font-size:20px;">Whether you are analyzing trends or exploring specific sightings, this tool provides insights into Seattle&#39;s local bird populations and their ecology.</h6>', unsafe_allow_html=True) 
 
 
 bcs_colors = {'dark green' : "#0A3C23",
