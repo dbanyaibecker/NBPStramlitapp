@@ -239,7 +239,7 @@ with col1:
                      tickfont = dict(size = 18, color = 'black')) 
     theme_bcs(fig1)
     st.write(fig1)
-    st.markdown("<div style = 'height: 500px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style = 'height: 400px;'></div>", unsafe_allow_html=True)
     st.image(image2, width=700)
 
 with gap: 
