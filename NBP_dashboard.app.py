@@ -324,7 +324,7 @@ with col2:
     figsurv = px.bar(sums, y = 'detections', color_discrete_sequence=['#7dcea0'])
     figsurv.update_layout(
         title={
-        'text': f"Number of Detections by Species at {park},<br> station {station}, on {date}",
+        'text': f"Number of Detections by Species at <br>{park}, station {station}, on {date}",
         'x': 0.5,  # Center the title
         'xanchor': 'center',  # Center align the title horizontally
         'yanchor': 'top',  # Anchor the title to the top
@@ -426,10 +426,10 @@ with col2:
         st.session_state.previous_park = None
 
 
-    selected_park = st.selectbox("Select a park", options=sorted(df['Park'].unique())) # create list of unique parks in dataframe 
+    selected_park = st.selectbox("Select a park", options=sorted(df['park'].unique())) # create list of unique parks in dataframe 
 
     if 'species_options' not in st.session_state or st.session_state.previous_park != park: # if the currently selected park doesn't equal park from the selection box 
-        st.session_state.species_options = sorted(df[df['Park'] == selected_park]['Species'].unique()) # then filter the df and pull out species for THAT selection box 
+        st.session_state.species_options = sorted(df[df['park'] == selected_park]['species'].unique()) # then filter the df and pull out species for THAT selection box 
         st.session_state.previous_park = park # AND update the selected_park in the cached session_state so that next time it's changed the plot will update
 
     selected_species = st.selectbox("Select species", options=st.session_state.species_options)
