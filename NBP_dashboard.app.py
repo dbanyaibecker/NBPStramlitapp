@@ -73,7 +73,7 @@ def theme_bcs(fig):
         ),
         
         # Margins and Borders
-        margin=dict(l=50, r=50, t=50, b=50),
+        margin=dict(l=50, r=50, t=90, b=50),
     )
     
     # Customizing traces (e.g., lines, markers)
