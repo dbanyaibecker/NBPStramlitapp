@@ -83,32 +83,38 @@ def theme_bcs(fig):
     )
     
     return fig
+
 url = "https://docs.google.com/spreadsheets/d/1iPxblBkWb-Iky5WGPTq2LoJYlm6fPgID_HCAhtRpIa8/pub?output=csv"
-inputfile = pd.read_csv(url)
-inputfile.columns = inputfile.columns.str.lower()
+@st.cache_data
+def load_data(url):
+    df = pd.read_csv(url)
+    df['survey_date'] = pd.to_datetime(df['survey_date']).dt.date # ensure datetime date format for survey_date column
+    df['detections'] = df[['seen','heard','fly']].apply(lambda x : x.sum(), axis = 1) # calculate detections 
+    return df
+
+df.columns = df.columns.str.lower()
 # Inject CSS into the app
 st.markdown(custom_css, unsafe_allow_html=True)
 # make small dataframes for each individual park 
-Seward = inputfile[inputfile['park'] == 'Seward Park'] # create a new df from og where park is equal to 'Seward Park'
-GoldenGardens = inputfile[inputfile['park'] == 'Golden Gardens Park']
-Discovery = inputfile[inputfile['park'] == 'Discovery Park']
-Carkeek = inputfile[inputfile['park'] == 'Carkeek Park']
-Lincoln = inputfile[inputfile['park'] == 'Lincoln Park']
-Magnuson = inputfile[inputfile['park'] == 'Magnuson Park']
-Cheasty = inputfile[inputfile['park'] == 'Cheasty Greenspace']
-WashingtonParkArboretum = inputfile[inputfile['park'] == 'Washington Park Arboretum']
-Genesee = inputfile[inputfile['park'] == 'Genesee Park']
-Walsh = inputfile[inputfile['park'] == 'Walsh Property']
-Bliner = inputfile[inputfile['park'] == 'Bliner Property']
-ShadowLakeBog = inputfile[inputfile['park'] == 'Shadow Lake Bog']
-LakeForest = inputfile[inputfile['park'] == 'Lake Forest Park']
-SoosCreek = inputfile[inputfile['park'] == 'Soos Creek']
-ClarkLake = inputfile[inputfile['park'] == 'Clark Lake Park']
-JenkinsCreek = inputfile[inputfile['park'] == "Jenkin's Creek Park"]
+Seward = df[df['park'] == 'Seward Park'] # create a new df from og where park is equal to 'Seward Park'
+GoldenGardens = df[df['park'] == 'Golden Gardens Park']
+Discovery = df[df['park'] == 'Discovery Park']
+Carkeek = df[df['park'] == 'Carkeek Park']
+Lincoln = df[df['park'] == 'Lincoln Park']
+Magnuson = df[df['park'] == 'Magnuson Park']
+Cheasty = df[df['park'] == 'Cheasty Greenspace']
+WashingtonParkArboretum = df[df['park'] == 'Washington Park Arboretum']
+Genesee = df[df['park'] == 'Genesee Park']
+Walsh = df[df['park'] == 'Walsh Property']
+Bliner = df[df['park'] == 'Bliner Property']
+ShadowLakeBog = df[df['park'] == 'Shadow Lake Bog']
+LakeForest = df[df['park'] == 'Lake Forest Park']
+SoosCreek = df[df['park'] == 'Soos Creek']
+ClarkLake = df[df['park'] == 'Clark Lake Park']
+JenkinsCreek = df[df['park'] == "Jenkin's Creek Park"]
 
 # Calculate richness from inputfile and map to the correct park
-
-inputfile['richness'] = inputfile['park'].map({ # here we are creating a dictionary where based on inputfile['Park'] we map the richness calculation to the correct column
+df['richness'] = df['park'].map({ # here we are creating a dictionary where based on inputfile['Park'] we map the richness calculation to the correct column
     'Seward Park' : len(Seward['species'].unique()),
     'Golden Gardens Park' : len(GoldenGardens['species'].unique()),
     'Discovery Park' : len(Discovery['species'].unique()),
@@ -127,23 +133,12 @@ inputfile['richness'] = inputfile['park'].map({ # here we are creating a diction
     "Jenkin's Creek Park" : len(JenkinsCreek['species'].unique())
 })
 
-with st.container():
-    col1, gap, col2= st.columns([1,0.1,1])
+col1, gap, col2= st.columns([1,0.1,1])
+
 #Viz 0 
 with col1: 
     st.markdown('<h1 style="color:black; font-size:40px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
-    # st.markdown('<h6 style="color:gray; font-size:20px;">Charts on the left show species richness are shown in this column</h6>', unsafe_allow_html=True) # change font of subtitle
-    # st.write('Here is our Dataset:') # write these words in the UI
-    # st.dataframe(inputfile.drop(['notes', 'surveyors'], axis = 1)) # show the dataframe in the UI 
-    df = inputfile # create a DF 
-    # st.write('The figure below is a boxplot of total species richness') # write these words in the UI
-#     # sns.barplot(x = 'Park', y = 'richness', data = df, width = 0.8, color = '#7dcea0') # create this barplot 
-#     # plt.xticks(rotation = 90) # rotate the x labels # of degrees
-#     # plt.ylabel('Species Richness')
-#     # plt.title('Total Species Richness of Surveryed Parks 1996-2023')
-#     # st.pyplot(plt) # show the plt in the UI 
 
-    # putting in a script for the 'same' barchart but usign plotly so that we can hover and zoom and stuff
     parksrich = pd.DataFrame(df.groupby('park').agg({'richness' : 'first'}).reset_index()) 
     # groups df by park and then pulls the first value for richness associated with that park and maps it to the correct cell
     #parksrich
@@ -258,39 +253,27 @@ with col1:
     st.write(fig1)
     st.markdown("<div style = 'height: 550px;'></div>", unsafe_allow_html=True)
     st.image(image2, width=700)
+
 with gap: 
     st.markdown("<div style = 'height: 80px;'></div>", unsafe_allow_html=True)
+
 with col2:     
     # st.image(image3, width = 700)
     st.markdown("<div style='height: 0px;'></div>", unsafe_allow_html=True)  # Adjust height as needed here for lowering start of col2  
 
     # # Viz #1 - count of all species at a PARK on a given day 
-
-    inputfile['survey_date'] = pd.to_datetime(inputfile['survey_date']).dt.date
-    inputfile['detections'] = inputfile[['seen','heard','fly']].apply(lambda x : x.sum(), axis = 1)
     
     # in order to add another selection box we need to define the parks for the selection box to filter on 
-    parks = sorted(inputfile['park'].unique()) # create & sort list alphabeticlly of parks in inputfile 
+    parks = sorted(df['park'].unique()) # create & sort list alphabeticlly of parks in inputfile 
     selectedpark = st.selectbox('Select Park', parks, key = 'park_select_1')
 
-    filter1 = pd.DataFrame(inputfile[(inputfile['park'] == selectedpark)]) # make new df "filter1" based on selected park
+    filter1 = pd.DataFrame(df[(df['park'] == selectedpark)]) # make new df "filter1" based on selected park
     
     # filter for dates at the "SELECTEDPARK" below 
     survey_dates = sorted(filter1['survey_date'].unique()) # creates unique list of survey dates from filter1
     selected_date = st.selectbox('Select survey date: YYYY-MM-DD',survey_dates) # streamlit selection box of survey dates available 
     filter2 = pd.DataFrame(filter1[(filter1['survey_date'] == selected_date)]) # filter filter 1 into another for the graph to use based on selected date
     specdet = pd.DataFrame(filter2.groupby('species')['detections'].sum())
-
-    # # fig = plt.figure()
-    # # sns.barplot(data= specdet, x='Species', y = 'detections', color = '#7dcea0', width=0.8, errorbar = None) 
-    # # plt.xticks(rotation =90) # rotates the x axis ticks (labels)
-    # # plt.title(f"Count of Species at {selectedpark} on {selected_date}")    
-    # # plt.xlabel('Species')
-    # # plt.ylabel('Count')
-    # # # plotly_fig = tls.mpl_to_plotly(fig)
-    # # # st.plotly_chart(plotly_fig)
-    # # st.pyplot(fig)
-    # # st.write(f"No other species were recorded at {selectedpark} on {selected_date}")
     
     specdet.reset_index()
     # st.write(specdet)
@@ -341,9 +324,9 @@ with col2:
 #     #Viz 2
     # species detection numbers for any given survey
     
-    parks3 = sorted(inputfile['park'].unique())
+    parks3 = sorted(df['park'].unique())
     park = st.selectbox('Select a park', parks3, key= 'park_select_3')
-    dfparky = pd.DataFrame(inputfile[inputfile['park'] == park]) 
+    dfparky = pd.DataFrame(df[df['park'] == park]) 
     stationz = sorted(dfparky['station'].unique())
     station = st.selectbox('Select a station',stationz)
     dfparkstation = pd.DataFrame(dfparky[dfparky['station'] == station])
@@ -353,16 +336,7 @@ with col2:
     dfparkstationdate = dfparkstation[dfparkstation['survey_date'] == date]
 
     sums = pd.DataFrame(dfparkstationdate.groupby('species')['detections'].sum())
-    # sums
-
-    # fig1 = plt.figure()
-    # sns.barplot(data = sums, x = 'Species', y='detections', color = '#7dcea0', width=0.8)
-    # plt.xticks(rotation = 90)
-    # plt.xlabel('Species')
-    # plt.ylabel('Count')
-    # plt.title(f"Count of each species detected at {park} station {station} on {date}")
-    # st.write(f"Total number of detections at {park} station {station} on {date}", sum(dfparkstationdate['detections']))
-    # st.pyplot(fig1)
+    
     figsurv = px.bar(sums, y = 'detections', color_discrete_sequence=['#7dcea0'])
     figsurv.update_layout(
         title={
@@ -407,65 +381,77 @@ with col2:
     st.write(figsurv)
     
     #Viz 2 - count of ONE species in a park through time (yearly)
-    parks2 = sorted(inputfile['park'].unique()) # create & sort list alphabeticlly of parks in inputfile 
-    selectedpark2 = st.selectbox('Select Park', parks2, key = 'park_select_2')
-    dfpark = inputfile[(inputfile['park'] == selectedpark2)]
+
+    # create functions that can cache the ct_year dataframe and chart so that this isn't rerun every time a selection box in column 1 is changed
+    @st.cache_resource
+    def filterparks(park, species): 
+        filtered_data = df[(df['Park'] == park) & (df['Species'] == species)]
+        ct_year = pd.DataFrame(filtered_data.groupby('Year')['detections'].sum().reset_index())
+        return ct_year
     
-    # dfpark['datecount'] = dfpark.groupby(['Survey Date', 'Species'])['Species'].transform('size') 
-    speciez = sorted(dfpark['species'].unique())
-    sp_choice = st.selectbox('Select species of interest', speciez)
-    st.write('If your species is not in the dropdown list, it has not been detected at this park according to our dataset.')    
-    dfpark_species = dfpark[dfpark['species'] == sp_choice]
-    
-    ct_year = pd.DataFrame(dfpark_species.groupby('year')['detections'].sum().reset_index())
-    
-    # fig = plt.figure()
-    # sns.scatterplot(data = avg_ct_year, x = 'Year', y = 'detections', color = '#7dcea0')
-    # sns.lineplot(data = avg_ct_year, x = 'Year', y = 'detections', color = '#e1f8f2')
-    # plt.gca().xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
-    # plt.title(f'Avg annual count of {sp_choice} at {selectedpark2}')
-    # st.write(fig)
-    
-    line = px.scatter(ct_year, x = 'year', y = 'detections', color_discrete_sequence=['#7dcea0'], trendline= 'ols')
-    line.update_layout(
-        title={
-        'text': f'Annual Number of Detections of {sp_choice} at {selectedpark2}',
-        'x': 0.5,  # Center the title
-        'xanchor': 'center',  # Center align the title horizontally
-        'yanchor': 'top',  # Anchor the title to the top
-        'font': {
-            'size' : 24,
-            'color' : 'black'
-        }
-    },
-        xaxis_title = 'Year',
-        yaxis_title = 'Mean Number of Detections',
-        width = 1000,
-        height = 500,
-        shapes =[
-        dict(
-            type='rect',
-            x0=0,
-            y0=0,
-            x1=1,
-            y1=1,
-            xref='paper',
-            yref='paper',
-            line=dict(
-                color='black',
-                width=2
-            ),
-            fillcolor='rgba(0,0,0,0)'  # Transparent fill
-        )
-    ],
-        margin = dict(l=40, r=40)
-        )
-    line.update_xaxes(tickangle = 0,
-                     title_font = dict(size = 18, color = 'black'),
-                     tickfont = dict(size = 18, color = 'black'),
-                     nticks = 10)
-    line.update_yaxes(title_font = dict(size = 18, color = 'black'),
-                     tickfont = dict(size = 18, color = 'black'))
-    theme_bcs(line)
+    @st.cache_resource
+    def create_plot(filtered_dataframe):
+        line = px.scatter(filtered_dataframe, x = 'Year', y = 'detections', color_discrete_sequence=['#7dcea0'], trendline= 'ols')
+        line.update_layout(
+            title={
+            'text': f'Annual Number of Detections of<br>{selected_species} at {selected_park}',
+            'x': 0.5,  # Center the title
+            'xanchor': 'center',  # Center align the title horizontally
+            'yanchor': 'top',  # Anchor the title to the top
+            'font': {
+                'size' : 24,
+                'color' : 'black'
+            }
+        },
+            xaxis_title = 'Year',
+            yaxis_title = 'Mean Number of Detections',
+            width = 1000,
+            height = 500,
+            shapes =[
+            dict(
+                type='rect',
+                x0=0,
+                y0=0,
+                x1=1,
+                y1=1,
+                xref='paper',
+                yref='paper',
+                line=dict(
+                    color='black',
+                    width=2
+                ),
+                fillcolor='rgba(0,0,0,0)'  # Transparent fill
+            )
+        ],
+            margin = dict(l=40, r=40)
+            )
+        line.update_xaxes(tickangle = 0,
+                        title_font = dict(size = 18, color = 'black'),
+                        tickfont = dict(size = 18, color = 'black'),
+                        nticks = 10)
+        line.update_yaxes(title_font = dict(size = 18, color = 'black'),
+                        tickfont = dict(size = 18, color = 'black'))
+        theme_bcs(line)
+        return(line)
+
+
+    # Initialize session state attributes if they do not exist
+    if 'species_options' not in st.session_state:
+        st.session_state.species_options = []
+    if 'previous_park' not in st.session_state:
+        st.session_state.previous_park = None
+
+
+    selected_park = st.selectbox("Select a park", options=sorted(df['Park'].unique())) # create list of unique parks in dataframe 
+
+    if 'species_options' not in st.session_state or st.session_state.previous_park != park: # if the currently selected park doesn't equal park from the selection box 
+        st.session_state.species_options = sorted(df[df['Park'] == selected_park]['Species'].unique()) # then filter the df and pull out species for THAT selection box 
+        st.session_state.previous_park = park # AND update the selected_park in the cached session_state so that next time it's changed the plot will update
+
+    selected_species = st.selectbox("Select species", options=st.session_state.species_options)
+
+    filtered_df = filterparks(selected_park, selected_species) # use the function i made earlier to filter the data by the selected options
+    plot = create_plot(filtered_df) # same here for the plot 
+
     st.write(line)
     st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)
