@@ -91,6 +91,7 @@ def load_data(url):
     df['survey_date'] = pd.to_datetime(df['survey_date']).dt.date # ensure datetime date format for survey_date column
     df['detections'] = df[['seen','heard','fly']].apply(lambda x : x.sum(), axis = 1) # calculate detections 
     return df
+df = load_data(url)
 
 df.columns = df.columns.str.lower()
 # Inject CSS into the app
@@ -135,18 +136,16 @@ df['richness'] = df['park'].map({ # here we are creating a dictionary where base
 
 col1, gap, col2= st.columns([1,0.1,1])
 
-#Viz 0 
+#Viz 0 (boxplot of total species richness for entire data set)
 with col1: 
     st.markdown('<h1 style="color:black; font-size:40px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
 
-    parksrich = pd.DataFrame(df.groupby('park').agg({'richness' : 'first'}).reset_index()) 
-    # groups df by park and then pulls the first value for richness associated with that park and maps it to the correct cell
-    #parksrich
+    parksrich = pd.DataFrame(df.groupby('park').agg({'richness' : 'first'}).reset_index()) # groups df by park and then pulls the first value for richness associated with that park and maps it to the correct cell
     fig = px.bar(parksrich, x = 'park', y= 'richness', color_discrete_sequence=['#7dcea0'])
     # BEGINNING OF FORMATTING FOR PLOTLY.EXPRESS
     fig.update_layout(
         title={
-        'text': 'Total Species Richness of Surveryed Parks 1996-2023',
+        'text': 'Total Species Richness of <br>Surveryed Parks 1996-2023',
         'x': 0.5,  # Center the title
         'xanchor': 'center',  # Center align the title horizontally
         'yanchor': 'top',  # Anchor the title to the top
@@ -187,24 +186,13 @@ with col1:
     st.write(fig)
     
     
-    st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)
-
-    
-#     # lets make another with select boxes so we can play with the data in the app based on the year  
-    
+    st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)    
 
 # Viz 0.5
-    # USE " COMMAND + [ " to untab a whole block of code
     years_sorted = sorted(df['year'].unique()) # Creates a list of unique years in ascending order 
     selected_year = st.selectbox('Select a Year', years_sorted) # Create a select box to pick which column to use in the barplot
     min_value = st.slider('Select a minimum value for richness', min_value= 0, max_value= 250, value=0)
     filtered_df = df[(df['year'] == selected_year) &  (df['richness'] >= min_value)] # filter the dataframe based on the selected year & minimum value
-    # fig, ax = plt.subplots()
-#     # sns.barplot(x = filtered_df['Park'], y = filtered_df['richness'], data=filtered_df, ax=ax, color = '#7dcea0')
-#     # plt.xticks(rotation =90)
-#     # plt.ylabel('Species Richness')
-#     # plt.title(f'Species Richness by Park {selected_year}')
-#     # st.pyplot(plt)
     
     filtered_df1 = pd.DataFrame(filtered_df.groupby('park').agg({'richness' : 'first'}).reset_index()) 
 
@@ -258,12 +246,9 @@ with gap:
     st.markdown("<div style = 'height: 80px;'></div>", unsafe_allow_html=True)
 
 with col2:     
-    # st.image(image3, width = 700)
     st.markdown("<div style='height: 0px;'></div>", unsafe_allow_html=True)  # Adjust height as needed here for lowering start of col2  
 
     # # Viz #1 - count of all species at a PARK on a given day 
-    
-    # in order to add another selection box we need to define the parks for the selection box to filter on 
     parks = sorted(df['park'].unique()) # create & sort list alphabeticlly of parks in inputfile 
     selectedpark = st.selectbox('Select Park', parks, key = 'park_select_1')
 
@@ -276,11 +261,10 @@ with col2:
     specdet = pd.DataFrame(filter2.groupby('species')['detections'].sum())
     
     specdet.reset_index()
-    # st.write(specdet)
     fig2 = px.bar(specdet,y = 'detections', color_discrete_sequence=['#7dcea0'])
     fig2.update_layout(
         title={
-        'text': f"Count of Each Species at {selectedpark} on {selected_date}",
+        'text': f"Count of Each Species at <br>{selectedpark} on {selected_date}",
         'x': 0.5,  # Center the title
         'xanchor': 'center',  # Center align the title horizontally
         'yanchor': 'top',  # Anchor the title to the top
@@ -340,7 +324,7 @@ with col2:
     figsurv = px.bar(sums, y = 'detections', color_discrete_sequence=['#7dcea0'])
     figsurv.update_layout(
         title={
-        'text': f"Number of Detections by Species at {park}, station {station}, on {date}",
+        'text': f"Number of Detections by Species at {park},<br> station {station}, on {date}",
         'x': 0.5,  # Center the title
         'xanchor': 'center',  # Center align the title horizontally
         'yanchor': 'top',  # Anchor the title to the top
@@ -385,13 +369,13 @@ with col2:
     # create functions that can cache the ct_year dataframe and chart so that this isn't rerun every time a selection box in column 1 is changed
     @st.cache_resource
     def filterparks(park, species): 
-        filtered_data = df[(df['Park'] == park) & (df['Species'] == species)]
-        ct_year = pd.DataFrame(filtered_data.groupby('Year')['detections'].sum().reset_index())
+        filtered_data = df[(df['park'] == park) & (df['species'] == species)]
+        ct_year = pd.DataFrame(filtered_data.groupby('year')['detections'].sum().reset_index())
         return ct_year
     
     @st.cache_resource
     def create_plot(filtered_dataframe):
-        line = px.scatter(filtered_dataframe, x = 'Year', y = 'detections', color_discrete_sequence=['#7dcea0'], trendline= 'ols')
+        line = px.scatter(filtered_dataframe, x = 'year', y = 'detections', color_discrete_sequence=['#7dcea0'], trendline= 'ols')
         line.update_layout(
             title={
             'text': f'Annual Number of Detections of<br>{selected_species} at {selected_park}',
@@ -453,5 +437,5 @@ with col2:
     filtered_df = filterparks(selected_park, selected_species) # use the function i made earlier to filter the data by the selected options
     plot = create_plot(filtered_df) # same here for the plot 
 
-    st.write(line)
+    st.write(plot)
     st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)
