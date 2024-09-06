@@ -39,7 +39,7 @@ image2 = Image.open(img_path2)
 
 # Display the image using Streamlit
 st.image(image, width=500)
-st.markdown('<h6 style="color:black; font-size:20px;">This dashboard allows you to explore and visualize Birds Connect Seattle data.</h6>', unsafe_allow_html=True)   
+st.markdown('<h6 style="color:black; font-size:20px;">This dashboard allows you to explore and visualize data from the Neighborhood Bird Project conducted by citizen scientists through Birds Connect Seattle..</h6>', unsafe_allow_html=True)   
 st.markdown('<h6 style="color:black; font-size:20px;">Use the selection boxes below to filter and generate charts based on species, location, and dates.</h6>', unsafe_allow_html=True)   
 st.markdown('<h6 style="color:black; font-size:20px;">Whether you are analyzing trends or exploring specific sightings, this tool provides insights into Seattle&#39;s local bird populations and their ecology.</h6>', unsafe_allow_html=True) 
 
