@@ -380,6 +380,8 @@ with col2:
     st.write(figsurv)
     
     #Viz 5 - count of ONE species in a park through time (yearly)
+    st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)     
+
     st.markdown('<h6 style="color:black; font-size:15px;">Chart 5 </h6>', unsafe_allow_html=True) 
     st.markdown('<h6 style="color:black; font-size:15px;">This chart shows the total number of detections of a selected species at a selected park through the years. </h6>', unsafe_allow_html=True) 
     st.markdown('<h6 style="color:black; font-size:15px;">Use the below selection boxes to toggle through parks and species of interest. You can hover over data points and the trend line for exact data.</h6>', unsafe_allow_html=True) 
