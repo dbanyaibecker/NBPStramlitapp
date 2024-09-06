@@ -41,9 +41,12 @@ image2 = Image.open(img_path2)
 st.image(image, width=500)
 st.markdown('<h1 style="color:black; font-size:40px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
 
-st.markdown('<h6 style="color:black; font-size:20px;">This dashboard allows you to explore and visualize data from the Neighborhood Bird Project(NBP) conducted by citizen scientists in conjunction with Birds Connect Seattle.</h6>', unsafe_allow_html=True)   
-st.markdown('<h6 style="color:black; font-size:20px;">Use the selection boxes below to filter and generate charts based on species, location, and dates.</h6>', unsafe_allow_html=True)   
-st.markdown('<h6 style="color:black; font-size:20px;">Whether you are analyzing trends or exploring specific sightings, this tool provides insights into Seattle&#39;s local bird populations and their ecology.</h6>', unsafe_allow_html=True) 
+st.markdown('<h6 style="color:black; font-size:25px;">This dashboard allows you to explore and visualize data from the Neighborhood Bird Project(NBP) conducted by citizen scientists in conjunction with Birds Connect Seattle.</h6>', unsafe_allow_html=True)   
+st.markdown('<h6 style="color:black; font-size:25px;">Use the selection boxes below to filter and generate charts based on species, location, and dates.</h6>', unsafe_allow_html=True)   
+st.markdown('<h6 style="color:black; font-size:25px;">Whether you are analyzing trends or exploring specific sightings, this tool provides insights into Seattle&#39;s local bird populations and their ecology.</h6>', unsafe_allow_html=True) 
+st.markdown('<h6 style="color:black; font-size:25px;">You are welcome to filter results using the provided selection boxes/sliders above a given chart.</h6>', unsafe_allow_html=True) 
+st.markdown('<h6 style="color:black; font-size:25px;">Hover over data in a chart to see exact data values or trend line values.</h6>', unsafe_allow_html=True) 
+st.markdown('<h6 style="color:black; font-size:25px;">Each chart can be downloaded as a png file for your needs by clicking the small camera icon in the top right corner of the chart. Toggle through the other icons to explore each chart in more detail.</h6>', unsafe_allow_html=True) 
 
 
 bcs_colors = {'dark green' : "#0A3C23",
@@ -141,9 +144,8 @@ col1, gap, col2= st.columns([1,0.1,1])
 #Viz 0 (boxplot of total species richness for entire data set)
 with col1: 
     st.markdown('<h6 style="color:black; font-size:15px;">Chart 1 </h6>', unsafe_allow_html=True) 
-    st.markdown('<h6 style="color:black; font-size:15px;">Species richness(total number of species detected) for each surveyed park since the beginning of the NBP. </h6>', unsafe_allow_html=True) 
-    # st.markdown('<h6 style="color:black; font-size:20px;">Chart 1 </h6>', unsafe_allow_html=True) 
-
+    st.markdown('<h6 style="color:black; font-size:15px;">This chart shows species richness (total number of species detected) for each park surveyed since the beginning of the NBP. </h6>', unsafe_allow_html=True) 
+    
     parksrich = pd.DataFrame(df.groupby('park').agg({'richness' : 'first'}).reset_index()) # groups df by park and then pulls the first value for richness associated with that park and maps it to the correct cell
     fig = px.bar(parksrich, x = 'park', y= 'richness', color_discrete_sequence=['#7dcea0'])
     # BEGINNING OF FORMATTING FOR PLOTLY.EXPRESS
@@ -193,9 +195,9 @@ with col1:
     st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)    
 
 # Viz 0.5
-    st.markdown('<h6 style="color:black; font-size:20px;">Chart 2 shows species richness(total number of species detected) for each park surveyed in a given year. </h6>', unsafe_allow_html=True) 
-    st.markdown('<h6 style="color:black; font-size:20px;">You are welcome to filter results based on year or minimum richness by using the selection box and slider below.</h6>', unsafe_allow_html=True) 
-    st.markdown('<h6 style="color:black; font-size:20px;">Chart 2 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">Chart 2 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">This chart shows species richness(total number of species detected) for each park surveyed in a given year. </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">You are welcome to filter results based on year and minimum richness by using the selection box and slider below.</h6>', unsafe_allow_html=True) 
 
     years_sorted = sorted(df['year'].unique()) # Creates a list of unique years in ascending order 
     selected_year = st.selectbox('Select a Year', years_sorted) # Create a select box to pick which column to use in the barplot
@@ -255,9 +257,10 @@ with gap:
 
 with col2:     
     st.markdown("<div style='height: 0px;'></div>", unsafe_allow_html=True)  # Adjust height as needed here for lowering start of col2  
-    st.markdown('<h6 style="color:black; font-size:20px;">Chart 3 shows species richness(total number of species detected) for each park surveyed in a given year. </h6>', unsafe_allow_html=True) 
-    st.markdown('<h6 style="color:black; font-size:20px;">You are welcome to filter results based on year or minimum richness by using the selection box and slider below.</h6>', unsafe_allow_html=True) 
-    st.markdown('<h6 style="color:black; font-size:20px;">Chart 3 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">Chart 3 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">This chart shows the number of detections for all species observed at a park on a given day. </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">You are welcome to filter results based on the park and day by using the selection boxes below.</h6>', unsafe_allow_html=True) 
+
     # # Viz #1 - count of all species at a PARK on a given day 
     parks = sorted(df['park'].unique()) # create & sort list alphabeticlly of parks in inputfile 
     selectedpark = st.selectbox('Select Park', parks, key = 'park_select_1')
@@ -317,6 +320,8 @@ with col2:
     st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)     
 #     #Viz 2
     # species detection numbers for any given survey
+    st.markdown('<h6 style="color:black; font-size:15px;">Chart 4 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">This chart is similar to the above chart but allows an additional filter down to the individual survey effort by selecting which station you are curious about. </h6>', unsafe_allow_html=True) 
     
     parks3 = sorted(df['park'].unique())
     park = st.selectbox('Select a park', parks3, key= 'park_select_3')
@@ -374,7 +379,10 @@ with col2:
     theme_bcs(figsurv)
     st.write(figsurv)
     
-    #Viz 2 - count of ONE species in a park through time (yearly)
+    #Viz 5 - count of ONE species in a park through time (yearly)
+    st.markdown('<h6 style="color:black; font-size:15px;">Chart 5 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">This chart shows the total number of detections of a selected species at a selected park through the years. </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">Use the below selection boxes to toggle through parks and species of interest. You can hover over data points and the trend line for exact data.</h6>', unsafe_allow_html=True) 
 
     # create functions that can cache the ct_year dataframe and chart so that this isn't rerun every time a selection box in column 1 is changed
     @st.cache_resource
