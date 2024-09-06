@@ -42,11 +42,11 @@ st.image(image, width=500)
 st.markdown('<h1 style="color:black; font-size:40px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
 
 st.markdown('<h6 style="color:black; font-size:25px;">This dashboard allows you to explore and visualize data from the Neighborhood Bird Project(NBP) conducted by citizen scientists in conjunction with Birds Connect Seattle.</h6>', unsafe_allow_html=True)   
-st.markdown('<h6 style="color:black; font-size:25px;">Use the selection boxes below to filter and generate charts based on species, location, and dates.</h6>', unsafe_allow_html=True)   
 st.markdown('<h6 style="color:black; font-size:25px;">Whether you are analyzing trends or exploring specific sightings, this tool provides insights into Seattle&#39;s local bird populations and their ecology.</h6>', unsafe_allow_html=True) 
-st.markdown('<h6 style="color:black; font-size:25px;">You are welcome to filter results using the provided selection boxes/sliders above a given chart.</h6>', unsafe_allow_html=True) 
+st.markdown('<h6 style="color:black; font-size:25px;">Use the selection boxes and sliders above a chart to filter and generate charts based on species, location, and/or dates.</h6>', unsafe_allow_html=True)   
+st.markdown('<h6 style="color:black; font-size:25px;">Each chart can be downloaded as a png file by clicking the small camera icon in the top right corner of the chart.</h6>', unsafe_allow_html=True) 
+st.markdown('<h6 style="color:black; font-size:25px;">Toggle through the other icons to explore each chart in more detail.</h6>', unsafe_allow_html=True) 
 st.markdown('<h6 style="color:black; font-size:25px;">Hover over data in a chart to see exact data values or trend line values.</h6>', unsafe_allow_html=True) 
-st.markdown('<h6 style="color:black; font-size:25px;">Each chart can be downloaded as a png file for your needs by clicking the small camera icon in the top right corner of the chart. Toggle through the other icons to explore each chart in more detail.</h6>', unsafe_allow_html=True) 
 
 
 bcs_colors = {'dark green' : "#0A3C23",
