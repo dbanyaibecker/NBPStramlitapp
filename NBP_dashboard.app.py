@@ -148,7 +148,7 @@ with col1:
         title={
         'text': 'Chart 1     Total Species Richness of <br>Surveyed Parks 1996-2023',
         'x': 0.0,  # Left align the title
-        'xanchor': 'center',  # Center align the title horizontally
+        'xanchor': 'left',  # Center align the title horizontally
         'yanchor': 'top',  # Anchor the title to the top
         'font': {
             'size' : 24,
