@@ -9,7 +9,7 @@ import plotly.tools as tls
 import plotly.express as px
 
 st.set_page_config(layout='wide')
-st.markdown('<h1 style="color:black; font-size:20px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
+st.markdown('<h1 style="color:black; font-size:40px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
 
 # Custom CSS for background and text color
 custom_css = """
@@ -139,8 +139,8 @@ col1, gap, col2= st.columns([1,0.1,1])
 
 #Viz 0 (boxplot of total species richness for entire data set)
 with col1: 
-    st.markdown('<h6 style="color:black; font-size:20px;">Chart 1 </h6>', unsafe_allow_html=True) 
-    st.markdown('<h6 style="color:black; font-size:20px;">Species richness(total number of species detected) for each surveyed park since the beginning of the NBP. </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:10px;">Chart 1 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:10px;">Species richness(total number of species detected) for each surveyed park since the beginning of the NBP. </h6>', unsafe_allow_html=True) 
     # st.markdown('<h6 style="color:black; font-size:20px;">Chart 1 </h6>', unsafe_allow_html=True) 
 
     parksrich = pd.DataFrame(df.groupby('park').agg({'richness' : 'first'}).reset_index()) # groups df by park and then pulls the first value for richness associated with that park and maps it to the correct cell
