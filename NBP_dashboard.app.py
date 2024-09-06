@@ -7,6 +7,7 @@ import streamlit as st
 import matplotlib.ticker as ticker 
 import plotly.tools as tls
 import plotly.express as px
+st.markdown('<h1 style="color:black; font-size:40px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
 
 st.set_page_config(layout='wide')
 
@@ -39,7 +40,7 @@ image2 = Image.open(img_path2)
 
 # Display the image using Streamlit
 st.image(image, width=500)
-st.markdown('<h6 style="color:black; font-size:20px;">This dashboard allows you to explore and visualize data from the Neighborhood Bird Project conducted by citizen scientists through Birds Connect Seattle.</h6>', unsafe_allow_html=True)   
+st.markdown('<h6 style="color:black; font-size:20px;">This dashboard allows you to explore and visualize data from the Neighborhood Bird Project(NBP) conducted by citizen scientists in conjunction with Birds Connect Seattle.</h6>', unsafe_allow_html=True)   
 st.markdown('<h6 style="color:black; font-size:20px;">Use the selection boxes below to filter and generate charts based on species, location, and dates.</h6>', unsafe_allow_html=True)   
 st.markdown('<h6 style="color:black; font-size:20px;">Whether you are analyzing trends or exploring specific sightings, this tool provides insights into Seattle&#39;s local bird populations and their ecology.</h6>', unsafe_allow_html=True) 
 
@@ -138,15 +139,15 @@ col1, gap, col2= st.columns([1,0.1,1])
 
 #Viz 0 (boxplot of total species richness for entire data set)
 with col1: 
-    st.markdown('<h1 style="color:black; font-size:40px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
+    st.markdown('<h6 style="color:black; font-size:20px;">Chart 1 below visualizes species richness(total number of species detected) for each surveyed park since the beginning of the NBP. </h6>', unsafe_allow_html=True) 
 
     parksrich = pd.DataFrame(df.groupby('park').agg({'richness' : 'first'}).reset_index()) # groups df by park and then pulls the first value for richness associated with that park and maps it to the correct cell
     fig = px.bar(parksrich, x = 'park', y= 'richness', color_discrete_sequence=['#7dcea0'])
     # BEGINNING OF FORMATTING FOR PLOTLY.EXPRESS
     fig.update_layout(
         title={
-        'text': 'Total Species Richness of <br>Surveyed Parks 1996-2023',
-        'x': 0.5,  # Center the title
+        'text': 'Chart 1     Total Species Richness of <br>Surveyed Parks 1996-2023',
+        'x': 0.0,  # Left align the title
         'xanchor': 'center',  # Center align the title horizontally
         'yanchor': 'top',  # Anchor the title to the top
         'font': {
