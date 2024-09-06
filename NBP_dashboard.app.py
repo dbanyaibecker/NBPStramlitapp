@@ -8,7 +8,7 @@ import matplotlib.ticker as ticker
 import plotly.tools as tls
 import plotly.express as px
 
-st.set_page_config(layout='wide')
+# st.set_page_config(layout='wide')
 
 # Custom CSS for background and text color
 custom_css = """
@@ -145,7 +145,7 @@ with col1:
     # BEGINNING OF FORMATTING FOR PLOTLY.EXPRESS
     fig.update_layout(
         title={
-        'text': 'Total Species Richness of <br>Surveryed Parks 1996-2023',
+        'text': 'Total Species Richness of <br>Surveyed Parks 1996-2023',
         'x': 0.5,  # Center the title
         'xanchor': 'center',  # Center align the title horizontally
         'yanchor': 'top',  # Anchor the title to the top
