@@ -8,7 +8,7 @@ import matplotlib.ticker as ticker
 import plotly.tools as tls
 import plotly.express as px
 
-# st.set_page_config(layout='wide')
+st.set_page_config(layout='wide')
 
 # Custom CSS for background and text color
 custom_css = """
