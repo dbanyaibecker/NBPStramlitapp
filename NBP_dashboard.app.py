@@ -9,7 +9,6 @@ import plotly.tools as tls
 import plotly.express as px
 
 st.set_page_config(layout='wide')
-st.markdown('<h1 style="color:black; font-size:40px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
 
 # Custom CSS for background and text color
 custom_css = """
@@ -40,6 +39,8 @@ image2 = Image.open(img_path2)
 
 # Display the image using Streamlit
 st.image(image, width=500)
+st.markdown('<h1 style="color:black; font-size:40px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
+
 st.markdown('<h6 style="color:black; font-size:20px;">This dashboard allows you to explore and visualize data from the Neighborhood Bird Project(NBP) conducted by citizen scientists in conjunction with Birds Connect Seattle.</h6>', unsafe_allow_html=True)   
 st.markdown('<h6 style="color:black; font-size:20px;">Use the selection boxes below to filter and generate charts based on species, location, and dates.</h6>', unsafe_allow_html=True)   
 st.markdown('<h6 style="color:black; font-size:20px;">Whether you are analyzing trends or exploring specific sightings, this tool provides insights into Seattle&#39;s local bird populations and their ecology.</h6>', unsafe_allow_html=True) 
@@ -139,8 +140,8 @@ col1, gap, col2= st.columns([1,0.1,1])
 
 #Viz 0 (boxplot of total species richness for entire data set)
 with col1: 
-    st.markdown('<h6 style="color:black; font-size:10px;">Chart 1 </h6>', unsafe_allow_html=True) 
-    st.markdown('<h6 style="color:black; font-size:10px;">Species richness(total number of species detected) for each surveyed park since the beginning of the NBP. </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">Chart 1 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">Species richness(total number of species detected) for each surveyed park since the beginning of the NBP. </h6>', unsafe_allow_html=True) 
     # st.markdown('<h6 style="color:black; font-size:20px;">Chart 1 </h6>', unsafe_allow_html=True) 
 
     parksrich = pd.DataFrame(df.groupby('park').agg({'richness' : 'first'}).reset_index()) # groups df by park and then pulls the first value for richness associated with that park and maps it to the correct cell
