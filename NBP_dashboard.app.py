@@ -139,8 +139,9 @@ col1, gap, col2= st.columns([1,0.1,1])
 
 #Viz 0 (boxplot of total species richness for entire data set)
 with col1: 
-    st.markdown('<h6 style="color:black; font-size:20px;">Chart 1 below visualizes species richness(total number of species detected) for each surveyed park since the beginning of the NBP. </h6>', unsafe_allow_html=True) 
-    st.markdown('<h6 style="color:black; font-size:20px;">Chart 1. </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:20px;">Chart 1 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:20px;">Species richness(total number of species detected) for each surveyed park since the beginning of the NBP. </h6>', unsafe_allow_html=True) 
+    # st.markdown('<h6 style="color:black; font-size:20px;">Chart 1 </h6>', unsafe_allow_html=True) 
 
     parksrich = pd.DataFrame(df.groupby('park').agg({'richness' : 'first'}).reset_index()) # groups df by park and then pulls the first value for richness associated with that park and maps it to the correct cell
     fig = px.bar(parksrich, x = 'park', y= 'richness', color_discrete_sequence=['#7dcea0'])
@@ -149,7 +150,7 @@ with col1:
         title={
         'text': 'Total Species Richness of <br>Surveyed Parks 1996-2023',
         'x': 0.5,  # center align
-        'xanchor': 'left',  # Center align the title horizontally
+        'xanchor': 'center',  # Center align the title horizontally
         'yanchor': 'top',  # Anchor the title to the top
         'font': {
             'size' : 24,
@@ -191,6 +192,10 @@ with col1:
     st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)    
 
 # Viz 0.5
+    st.markdown('<h6 style="color:black; font-size:20px;">Chart 2 shows species richness(total number of species detected) for each park surveyed in a given year. </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:20px;">You are welcome to filter results based on year or minimum richness by using the selection box and slider below.</h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:20px;">Chart 2 </h6>', unsafe_allow_html=True) 
+
     years_sorted = sorted(df['year'].unique()) # Creates a list of unique years in ascending order 
     selected_year = st.selectbox('Select a Year', years_sorted) # Create a select box to pick which column to use in the barplot
     min_value = st.slider('Select a minimum value for richness', min_value= 0, max_value= 250, value=0)
@@ -249,7 +254,9 @@ with gap:
 
 with col2:     
     st.markdown("<div style='height: 0px;'></div>", unsafe_allow_html=True)  # Adjust height as needed here for lowering start of col2  
-
+    st.markdown('<h6 style="color:black; font-size:20px;">Chart 3 shows species richness(total number of species detected) for each park surveyed in a given year. </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:20px;">You are welcome to filter results based on year or minimum richness by using the selection box and slider below.</h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:20px;">Chart 3 </h6>', unsafe_allow_html=True) 
     # # Viz #1 - count of all species at a PARK on a given day 
     parks = sorted(df['park'].unique()) # create & sort list alphabeticlly of parks in inputfile 
     selectedpark = st.selectbox('Select Park', parks, key = 'park_select_1')
