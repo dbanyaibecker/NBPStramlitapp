@@ -9,7 +9,7 @@ import plotly.tools as tls
 import plotly.express as px
 
 st.set_page_config(layout='wide')
-st.markdown('<h1 style="color:black; font-size:40px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
+st.markdown('<h1 style="color:black; font-size:20px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
 
 # Custom CSS for background and text color
 custom_css = """
