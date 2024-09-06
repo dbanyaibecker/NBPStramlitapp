@@ -388,7 +388,7 @@ with col2:
             }
         },
             xaxis_title = 'Year',
-            yaxis_title = 'Mean Number of Detections',
+            yaxis_title = 'Number of Detections',
             width = 1000,
             height = 500,
             shapes =[
@@ -424,7 +424,7 @@ with col2:
         st.session_state.species_options = []
     if 'previous_park' not in st.session_state:
         st.session_state.previous_park = None
-
+# there is a bug here where species_options is not updating correctly.... Seward has bald eagles but not an option in dropdown for this chart.... 
 
     selected_park = st.selectbox("Select a park", options=sorted(df['park'].unique())) # create list of unique parks in dataframe 
 
