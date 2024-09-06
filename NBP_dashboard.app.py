@@ -140,14 +140,15 @@ col1, gap, col2= st.columns([1,0.1,1])
 #Viz 0 (boxplot of total species richness for entire data set)
 with col1: 
     st.markdown('<h6 style="color:black; font-size:20px;">Chart 1 below visualizes species richness(total number of species detected) for each surveyed park since the beginning of the NBP. </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:20px;">Chart 1. </h6>', unsafe_allow_html=True) 
 
     parksrich = pd.DataFrame(df.groupby('park').agg({'richness' : 'first'}).reset_index()) # groups df by park and then pulls the first value for richness associated with that park and maps it to the correct cell
     fig = px.bar(parksrich, x = 'park', y= 'richness', color_discrete_sequence=['#7dcea0'])
     # BEGINNING OF FORMATTING FOR PLOTLY.EXPRESS
     fig.update_layout(
         title={
-        'text': 'Chart 1     Total Species Richness of <br>Surveyed Parks 1996-2023',
-        'x': 0.0,  # Left align the title
+        'text': 'Total Species Richness of <br>Surveyed Parks 1996-2023',
+        'x': 0.5,  # center align
         'xanchor': 'left',  # Center align the title horizontally
         'yanchor': 'top',  # Anchor the title to the top
         'font': {
