@@ -386,8 +386,6 @@ with col2:
     st.markdown('<h6 style="color:black; font-size:15px;">This chart shows the total number of detections of a selected species at a selected park through the years. </h6>', unsafe_allow_html=True) 
     st.markdown('<h6 style="color:black; font-size:15px;">Use the below selection boxes to toggle through parks and species of interest. You can hover over data points and the trend line for exact data.</h6>', unsafe_allow_html=True) 
 
-    # create functions that can cache the ct_year dataframe and chart so that this isn't rerun every time a selection box in column 1 is changed
-    @st.cache_resource
     def filterparks(park, species): 
         filtered_data = df[(df['park'] == park) & (df['species'] == species)]
         ct_year = pd.DataFrame(filtered_data.groupby('year')['detections'].sum().reset_index())
