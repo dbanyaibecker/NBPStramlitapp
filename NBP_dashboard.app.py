@@ -386,6 +386,7 @@ with col2:
     st.markdown('<h6 style="color:black; font-size:15px;">This chart shows the total number of detections of a selected species at a selected park through the years. </h6>', unsafe_allow_html=True) 
     st.markdown('<h6 style="color:black; font-size:15px;">Use the below selection boxes to toggle through parks and species of interest. You can hover over data points and the trend line for exact data.</h6>', unsafe_allow_html=True) 
 
+    @st.cache_resource
     def filterparks(park, species): 
         filtered_data = df[(df['park'] == park) & (df['species'] == species)]
         ct_year = pd.DataFrame(filtered_data.groupby('year')['detections'].sum().reset_index())
@@ -446,9 +447,9 @@ with col2:
 
     selected_park = st.selectbox("Select a park", options=sorted(df['park'].unique())) # create list of unique parks in dataframe 
 
-    if 'species_options' not in st.session_state or st.session_state.previous_park != park: # if the currently selected park doesn't equal park from the selection box 
+    if 'species_options' not in st.session_state or st.session_state.previous_park != selected_park: # if the currently selected park doesn't equal park from the selection box 
         st.session_state.species_options = sorted(df[df['park'] == selected_park]['species'].unique()) # then filter the df and pull out species for THAT selection box 
-        st.session_state.previous_park = park # AND update the selected_park in the cached session_state so that next time it's changed the plot will update
+        st.session_state.previous_park = selected_park # AND update the selected_park in the cached session_state so that next time it's changed the plot will update
 
     selected_species = st.selectbox("Select species", options=st.session_state.species_options)
 
