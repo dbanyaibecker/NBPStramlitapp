@@ -48,6 +48,8 @@ st.markdown('<h6 style="color:black; font-size:25px;">Each chart can be download
 st.markdown('<h6 style="color:black; font-size:25px;">Toggle through the other icons to explore each chart in more detail.</h6>', unsafe_allow_html=True) 
 st.markdown('<h6 style="color:black; font-size:25px;">Hover over data in a chart to see exact data values or trend line values.</h6>', unsafe_allow_html=True) 
 
+st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)     
+
 
 bcs_colors = {'dark green' : "#0A3C23",
   'cream' : "#FAF5F0",
