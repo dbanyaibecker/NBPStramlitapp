@@ -251,8 +251,82 @@ with col1:
                      tickfont = dict(size = 18, color = 'black')) 
     theme_bcs(fig1)
     st.write(fig1)
-    st.markdown("<div style = 'height: 700px;'></div>", unsafe_allow_html=True)
-    st.image(image2, width=700)
+    # st.markdown("<div style = 'height: 700px;'></div>", unsafe_allow_html=True)
+    # st.image(image2, width=700)
+
+    
+    
+    
+    
+    
+    #VIZ 0.75 
+    #AVG count of species per month at a park
+    
+    #filter by species
+    ssp = sorted(df['species'].unique())
+    selected_sp = st.selectbox('Select a species', ssp)
+    filtered = pd.DataFrame(df[df['species']==selected_sp])
+    parky = sorted(filtered['park'].unique())
+    park_choice = st.selectbox('Select a park', parky)
+    filtered2 = pd.DataFrame(filtered[filtered['park']==park_choice])
+    
+    
+    
+    df_ctmonth = pd.DataFrame(filtered2.groupby(['year','month'])['species'].count())
+    df_ctmonth.reset_index(inplace=True)
+    monthly_avg = dict(df_ctmonth.groupby(['month'])['species'].mean())
+    df_ctmonth['avg_ct'] = None
+    df_ctmonth['avg_ct'] = df_ctmonth['month'].map(monthly_avg)# I want to map monthly avg to a cell based on what is in the month column for that index
+    df_ctmonth['avg_ct'] = df_ctmonth['avg_ct'].round(0)
+
+    df_ctmonth['month'] = pd.to_datetime(df_ctmonth['month'], format = '%B')
+    df_ctmonth['m_name'] = df_ctmonth['month'].dt.strftime('%B')
+
+    chart = px.scatter(data_frame = df_ctmonth, x = 'month', y='avg_ct',trendline='ols')
+    chart.update_xaxes(
+        tickvals = df_ctmonth['month'],
+        ticktext = df_ctmonth['m_name']
+    )
+    theme_bcs(chart)
+    chart.update_layout(
+        title={
+        'text': f"Average number of detections of {ssp} at {park_choice} by month",
+        'x': 0.5,  # Center the title
+        'xanchor': 'center',  # Center align the title horizontally
+        'yanchor': 'top',  # Anchor the title to the top
+        'font': {
+            'size' : 24,
+            'color' : 'black'
+        }
+    },
+        xaxis_title = 'Month',
+        yaxis_title = 'Average number of detections',
+        width = 800,
+        height = 800,
+        shapes =[
+        dict(
+            type='rect',
+            x0=0,
+            y0=0,
+            x1=1,
+            y1=1,
+            xref='paper',
+            yref='paper',
+            line=dict(
+                color='black',
+                width=2
+            ),
+            fillcolor='rgba(0,0,0,0)'  # Transparent fill
+        )
+    ],
+        margin = dict(l=40, r=40)
+        )
+    st.write(chart)
+    
+    
+    
+    
+    
 
 with gap: 
     st.markdown("<div style = 'height: 80px;'></div>", unsafe_allow_html=True)
