@@ -279,7 +279,7 @@ with col1:
     df_ctmonth['avg_ct'] = df_ctmonth['month'].map(monthly_avg)# I want to map monthly avg to a cell based on what is in the month column for that index
     df_ctmonth['avg_ct'] = df_ctmonth['avg_ct'].round(0)
 
-    df_ctmonth['month'] = pd.to_datetime(df_ctmonth['month'], format = '%B')
+    df_ctmonth['month'] = pd.to_datetime(df_ctmonth['month'], format = 'mixed')
     df_ctmonth['m_name'] = df_ctmonth['month'].dt.strftime('%B')
 
     chart = px.scatter(data_frame = df_ctmonth, x = 'month', y='avg_ct',trendline='ols')
