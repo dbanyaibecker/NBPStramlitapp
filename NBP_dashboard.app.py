@@ -325,6 +325,12 @@ with col1:
     ],
         margin = dict(l=40, r=40)
         )
+    chart.update_xaxes(tickangle = -45,
+                     title_font = dict(size = 18, color = 'black'),
+                     tickfont = dict(size = 18, color = 'black'))
+    chart.update_yaxes(range=[0, df['richness'].max()+20], 
+                     title_font = dict(size = 18, color = 'black'),
+                     tickfont = dict(size = 18, color = 'black')) 
     theme_bcs(chart)
     st.write(chart)
         
