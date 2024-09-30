@@ -41,7 +41,7 @@ image2 = Image.open(img_path2)
 st.image(image, width=500)
 st.markdown('<h1 style="color:black; font-size:40px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
 
-st.markdown('<h6 style="color:black; font-size:25px;">This dashboard allows you to explore and visualize data from the Neighborhood Bird Project(NBP) conducted by citizen scientists in conjunction with Birds Connect Seattle.</h6>', unsafe_allow_html=True)   
+st.markdown('<h6 style="color:black; font-size:25px;">This dashboard allows you to explore and visualize data from the Neighborhood Bird Project(NBP) conducted by community scientists in conjunction with Birds Connect Seattle.</h6>', unsafe_allow_html=True)   
 st.markdown('<h6 style="color:black; font-size:25px;">Whether you are analyzing trends or exploring specific sightings, this tool provides insights into Seattle&#39;s local bird populations and their ecology.</h6>', unsafe_allow_html=True) 
 st.markdown('<h6 style="color:black; font-size:25px;">Use the selection boxes and sliders above a chart to filter and generate charts based on species, location, and/or dates.</h6>', unsafe_allow_html=True)   
 st.markdown('<h6 style="color:black; font-size:25px;">Each chart can be downloaded as a png file by clicking the small camera icon in the top right corner of the chart.</h6>', unsafe_allow_html=True) 
@@ -251,15 +251,97 @@ with col1:
                      tickfont = dict(size = 18, color = 'black')) 
     theme_bcs(fig1)
     st.write(fig1)
-    st.markdown("<div style = 'height: 700px;'></div>", unsafe_allow_html=True)
+    
+    st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)    
+
+    # VIZ 0.75
+    
+    
+    st.markdown('<h6 style="color:black; font-size:15px;">Chart 3 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">This chart shows the average monthly detections of a selected species detected at the selected park. </h6>', unsafe_allow_html=True) 
+    
+    
+    # Okay, what I want to do here is pick a species and a park and then chart the avg ct of that species at that park for every month of the year
+    months = {1:'January', 2:'February', 3:"March",4:"April",5:"May",6:"June",7:"July",8:"August",9:"September",10:'October',11:'November',12 :'December'}
+    m_order= ('January','February', "March","April","May","June","July","August","September",'October','November','December')
+
+    df['month_order'] = df['month']
+    df['month'] = df['month'].map(months)
+
+    parky = sorted(df['park'].unique())
+    parkchoice = st.selectbox('Select a park', parky, key='parky')
+    filtered = pd.DataFrame(df[df['park']== parkchoice])
+    ssp = sorted(df['species'].unique())
+    sp_choice = st.selectbox('Select a species', ssp, key = 'parkspec')
+    filtered2 = pd.DataFrame(filtered[filtered['species']==sp_choice])
+
+    # okay now that I have a df that is filtered I want to groupby year and month and count the number of birds there 
+    df_ctmonth = pd.DataFrame(filtered2.groupby(['year','month'])['detections'].sum())
+    df_ctmonth.reset_index(inplace=True)
+    monthly_avg = dict(df_ctmonth.groupby(['month'])['detections'].mean())
+    df_ctmonth['avg_ct'] = None
+    df_ctmonth['avg_ct'] = df_ctmonth['month'].map(monthly_avg)# I want to map monthly avg to a cell based on what is in the month column for that index
+    df_ctmonth['avg_ct'] = df_ctmonth['avg_ct'].round(0)
+
+    df_ctmonth['month'] = pd.to_datetime(df_ctmonth['month'], format = '%B')
+    df_ctmonth['m_name'] = df_ctmonth['month'].dt.strftime('%B')
+    df_ctmonth = df_ctmonth.drop_duplicates(subset='month', keep='first')
+    chart = px.bar(data_frame = df_ctmonth, x = 'month', y='avg_ct')
+    chart.update_xaxes(
+        tickvals = df_ctmonth['month'],
+        ticktext = df_ctmonth['m_name']
+    )
+    
+    chart.update_layout(
+        title={
+        'text': f"Average Monthly Detections of <br>{sp_choice} at {parkchoice}",
+        'x': 0.5,  # Center the title
+        'xanchor': 'center',  # Center align the title horizontally
+        'yanchor': 'top',  # Anchor the title to the top
+        'font': {
+            'size' : 24,
+            'color' : 'black'
+        }
+    },
+        xaxis_title = 'Month',
+        yaxis_title = 'Average Detections',
+        width = 800,
+        height = 800,
+        shapes =[
+        dict(
+            type='rect',
+            x0=0,
+            y0=0,
+            x1=1,
+            y1=1,
+            xref='paper',
+            yref='paper',
+            line=dict(
+                color='black',
+                width=2
+            ),
+            fillcolor='rgba(0,0,0,0)'  # Transparent fill
+        )
+    ],
+        margin = dict(l=40, r=40)
+        )
+    theme_bcs(chart)
+    st.write(chart)
+        
+    
+    
+    # st.markdown("<div style = 'height: 700px;'></div>", unsafe_allow_html=True)
     st.image(image2, width=700)
+    
+    
+    
 
 with gap: 
     st.markdown("<div style = 'height: 80px;'></div>", unsafe_allow_html=True)
 
 with col2:     
     st.markdown("<div style='height: 0px;'></div>", unsafe_allow_html=True)  # Adjust height as needed here for lowering start of col2  
-    st.markdown('<h6 style="color:black; font-size:15px;">Chart 3 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">Chart 4 </h6>', unsafe_allow_html=True) 
     st.markdown('<h6 style="color:black; font-size:15px;">This chart shows the number of detections for all species observed at a park on a given day. </h6>', unsafe_allow_html=True) 
     st.markdown('<h6 style="color:black; font-size:15px;">You are welcome to filter results based on the park and day by using the selection boxes below.</h6>', unsafe_allow_html=True) 
 
@@ -322,7 +404,7 @@ with col2:
     st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)     
 #     #Viz 2
     # species detection numbers for any given survey
-    st.markdown('<h6 style="color:black; font-size:15px;">Chart 4 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">Chart 5</h6>', unsafe_allow_html=True) 
     st.markdown('<h6 style="color:black; font-size:15px;">This chart is similar to the above chart but allows an additional filter down to the individual survey effort by selecting which station you are curious about. </h6>', unsafe_allow_html=True) 
     
     parks3 = sorted(df['park'].unique())
@@ -384,7 +466,7 @@ with col2:
     #Viz 5 - count of ONE species in a park through time (yearly)
     st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)     
 
-    st.markdown('<h6 style="color:black; font-size:15px;">Chart 5 </h6>', unsafe_allow_html=True) 
+    st.markdown('<h6 style="color:black; font-size:15px;">Chart 6 </h6>', unsafe_allow_html=True) 
     st.markdown('<h6 style="color:black; font-size:15px;">This chart shows the total number of detections of a selected species at a selected park through the years. </h6>', unsafe_allow_html=True) 
     st.markdown('<h6 style="color:black; font-size:15px;">Use the below selection boxes to toggle through parks and species of interest. You can hover over data points and the trend line for exact data.</h6>', unsafe_allow_html=True) 
 
