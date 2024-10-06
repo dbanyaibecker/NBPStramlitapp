@@ -573,5 +573,5 @@ with col2:
 
 
     st.markdown('<h6 style="color:black; font-size:30px;">DISCLAIMER:</h6>', unsafe_allow_html=True) 
-    st.markdown('These analyses are based on data that has not been thoroughly proofed and should not be used to inform conservation management decisions. Please consult with the appropriate parties at Birds Connect Seattle before using this data for any purposes. If you would like more information about this project please feel free to read the NBP&#39;s most recent reports [here](https://birdsconnectsea.org/our-work/conservation__trashed/urban-conservation/neighborhood-bird-project/.com) and/or contact Josh Morris at JoshM@birdsconnectsea.org.') 
+    st.markdown('These analyses are based on data that has not been thoroughly proofed and should not be used to inform conservation management decisions. Please consult with the appropriate parties at Birds Connect Seattle before using this data for any purposes. If you would like more information about this project please feel free to read the NBP&#39;s most recent reports [here](https://birdsconnectsea.org/our-work/conservation__trashed/urban-conservation/neighborhood-bird-project/) and/or contact Josh Morris at JoshM@birdsconnectsea.org.') 
 
