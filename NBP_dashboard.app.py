@@ -41,12 +41,12 @@ image2 = Image.open(img_path2)
 st.image(image, width=500)
 st.markdown('<h1 style="color:black; font-size:40px;">Neighborhood Bird Project Dashboard</h1>', unsafe_allow_html=True) # change font of title? 
 
-st.markdown('<h6 style="color:black; font-size:25px;">This dashboard allows you to explore and visualize data from the Neighborhood Bird Project(NBP) conducted by community scientists in conjunction with Birds Connect Seattle.</h6>', unsafe_allow_html=True)   
-st.markdown('<h6 style="color:black; font-size:25px;">Whether you are analyzing trends or exploring specific sightings, this tool provides insights into Seattle&#39;s local bird populations and their ecology.</h6>', unsafe_allow_html=True) 
-st.markdown('<h6 style="color:black; font-size:25px;">Use the selection boxes and sliders above a chart to filter and generate charts based on species, location, and/or dates.</h6>', unsafe_allow_html=True)   
-st.markdown('<h6 style="color:black; font-size:25px;">Each chart can be downloaded as a png file by clicking the small camera icon in the top right corner of the chart.</h6>', unsafe_allow_html=True) 
-st.markdown('<h6 style="color:black; font-size:25px;">Toggle through the other icons to explore each chart in more detail.</h6>', unsafe_allow_html=True) 
-st.markdown('<h6 style="color:black; font-size:25px;">Hover over data in a chart to see exact data values or trend line values.</h6>', unsafe_allow_html=True) 
+st.markdown('<h6 style="color:black; font-size:20px;">This dashboard allows you to explore and visualize data from the Neighborhood Bird Project(NBP) conducted by community scientists in conjunction with Birds Connect Seattle.</h6>', unsafe_allow_html=True)   
+st.markdown('<h6 style="color:black; font-size:20px;">Whether you are analyzing trends or exploring specific sightings, this tool provides insights into Seattle&#39;s local bird populations and their ecology.</h6>', unsafe_allow_html=True) 
+st.markdown('<h6 style="color:black; font-size:20px;">Use the selection boxes and sliders above a chart to filter and generate charts based on species, location, and/or dates.</h6>', unsafe_allow_html=True)   
+st.markdown('<h6 style="color:black; font-size:20px;">Each chart can be downloaded as a png file by clicking the small camera icon in the top right corner of the chart.</h6>', unsafe_allow_html=True) 
+st.markdown('<h6 style="color:black; font-size:20px;">Toggle through the other icons to explore each chart in more detail.</h6>', unsafe_allow_html=True) 
+st.markdown('<h6 style="color:black; font-size:20px;">Hover over data in a chart to see exact data values or trend line values.</h6>', unsafe_allow_html=True) 
 
 st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)     
 
@@ -145,6 +145,34 @@ col1, gap, col2= st.columns([1,0.1,1])
 
 #Viz 0 (boxplot of total species richness for entire data set)
 with col1: 
+    st.markdown('<h6 style="color:black; font-size:15px;">Toggle the below check-boxes to include inactive survey sites throughout Seattle and or detections identified at only genus level.  </h6>', unsafe_allow_html=True) 
+ 
+ 
+ # _______ adding a toggle box to include or exclude historically surveyed parks_________#
+    
+    historic_parks = ["Jenkin's Creek Park","Clark Lake Park","Soos Creek","Shadow Lake Bog","Bliner Property","Walsh Property"]
+        
+    toggle = st.checkbox(f'Include historic survey sites that are no longer actively surveyed by the NBP. By default these sites are not included in any of the analyses. ')
+    if toggle: 
+        df = df
+        # print(sorted(df['park'].unique()))
+    else: 
+        df = df[~df['park'].isin(historic_parks)]
+        # print(sorted(df['park'].unique()))
+ 
+    toggle = st.checkbox(f'Include detections identified only to the genus level. By default these detections are not included in any of the analyses.', key='spud_tog')
+    if toggle: 
+        df = df
+        # print(sorted(df['park'].unique()))
+    else: 
+        df = df[~df['species'].str.contains("sp.", na=False)]
+        print(sorted(df['species'].unique()))
+ 
+ 
+ 
+ 
+ 
+    
     st.markdown('<h6 style="color:black; font-size:15px;">Chart 1 </h6>', unsafe_allow_html=True) 
     st.markdown('<h6 style="color:black; font-size:15px;">This chart shows species richness (total number of species detected) for each park surveyed since the beginning of the NBP. </h6>', unsafe_allow_html=True) 
     
@@ -325,12 +353,6 @@ with col1:
     ],
         margin = dict(l=40, r=40)
         )
-    chart.update_xaxes(tickangle = -45,
-                     title_font = dict(size = 18, color = 'black'),
-                     tickfont = dict(size = 18, color = 'black'))
-    chart.update_yaxes(range=[0, df_ctmonth['avg_ct'].max() + (df_ctmonth['avg_ct'].max()*0.2)], 
-                     title_font = dict(size = 18, color = 'black'),
-                     tickfont = dict(size = 18, color = 'black')) 
     theme_bcs(chart)
     st.write(chart)
         
@@ -548,3 +570,8 @@ with col2:
 
     st.write(plot)
     st.markdown('<hr style= "border: 2px solid black;">', unsafe_allow_html= True)
+
+
+    st.markdown('<h6 style="color:black; font-size:30px;">DISCLAIMER:</h6>', unsafe_allow_html=True) 
+    st.markdown('These analyses are based on data that has not been thoroughly proofed and should not be used to inform conservation management decisions. Please consult with the appropriate parties at Birds Connect Seattle before using this data for any purposes. If you would like more information about this project please feel free to read the NBP&#39;s most recent reports [here](https://birdsconnectsea.org/our-work/conservation__trashed/urban-conservation/neighborhood-bird-project/.com) and/or contact Josh Morris at JoshM@birdsconnectsea.org.') 
+
